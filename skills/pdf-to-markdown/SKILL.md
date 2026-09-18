@@ -42,11 +42,16 @@ unchanged PDF is instant.
 ### Workflow
 
 1. **Never `Read` the `.pdf` itself.** That is the thing this skill exists to avoid.
-2. Convert:
+2. Convert. Use `python3` on macOS and Linux, `python` on Windows (`python3`
+   there hits the Microsoft Store stub and fails):
 
    ```bash
-   python3 skills/pdf-to-markdown/scripts/pdf2md.py "/path/to/file.pdf"
+   python3 <skill>/scripts/pdf2md.py "/path/to/file.pdf"
    ```
+
+   `<skill>` is wherever this skill is installed - `~/.claude/skills/pdf-to-markdown`
+   when installed globally, `%USERPROFILE%\.claude\skills\pdf-to-markdown` on
+   Windows, or `skills/pdf-to-markdown` when working inside the ECC repo.
 
 3. Read `outline.md`. It is a few hundred tokens and tells you where everything is.
 4. Pull only what you need, using the line numbers from the outline:
@@ -88,6 +93,10 @@ pip install pymupdf4llm          # recommended: headings, tables, real Markdown
 pip install 'markitdown[pdf]'    # also handles DOCX, XLSX, PPTX
 apt-get install poppler-utils    # pdftotext, fastest, layout only
 ```
+
+On Windows use `python -m pip install pymupdf4llm`, and drop the quotes around
+`markitdown[pdf]` in CMD. The PATH warning pip prints about `Scripts\` is
+harmless here - the skill imports the library, it never calls those .exe files.
 
 With none installed the script exits 2 and prints these instructions — it never
 crashes and never falls back to reading the PDF into context.
@@ -149,5 +158,7 @@ grep -rn -i 'vencimiento' .cache/pdf-md/*/document.md
 - `est_tokens` is a `chars / 4` estimate — a planning figure, not an exact count.
 - The converter has its own tests, runnable with no backend installed:
   `python3 skills/pdf-to-markdown/tests/test_pdf2md.py`.
+- Console output is forced to UTF-8, so a filename with an em dash or a curly
+  quote cannot crash the run on a legacy Windows codepage.
 - Text extraction from PDFs is imperfect. Before quoting verbatim in anything
   that matters, check the quote against the page it came from.

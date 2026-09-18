@@ -535,7 +535,22 @@ def report(meta):
     return "\n".join(lines)
 
 
+def widen_console():
+    """Stop a legacy console codepage from killing the run.
+
+    A Windows console defaults to cp850/cp1252, so printing a filename with an
+    em dash or a curly quote raises UnicodeEncodeError - after the conversion
+    already succeeded. Reporting is never worth failing over.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
+
 def main():
+    widen_console()
     parser = argparse.ArgumentParser(description="Convert a PDF to Markdown on disk.")
     parser.add_argument("input", help="path to the PDF")
     parser.add_argument("--out", default=DEFAULT_OUT, help="output root (default: %s)" % DEFAULT_OUT)
