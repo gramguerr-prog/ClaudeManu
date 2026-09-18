@@ -562,6 +562,7 @@
       "description": "Document processing, conversion, and translation skills.",
       "paths": [
         "skills/nutrient-document-processing",
+        "skills/pdf-to-markdown",
         "skills/visa-doc-translate"
       ],
       "targets": [
