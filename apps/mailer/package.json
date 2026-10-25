@@ -1,0 +1,15 @@
+{
+  "name": "manumail",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Herramienta de email marketing autoalojada (audiencias, campanas, seguimiento de aperturas y clics, bajas).",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "license": "MIT"
+}
